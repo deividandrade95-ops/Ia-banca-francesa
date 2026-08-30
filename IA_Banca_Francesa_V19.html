@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#050c13">
+<title>IA Banca Francesa • V19</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#02070c;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:560px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);background:linear-gradient(#02070c,#06101a)}
+.header{display:flex;align-items:center;gap:12px;padding:18px 4px 14px}.menu,.help{color:#e9b83f}.menu{font-size:29px}.logo{width:50px;height:50px;border:2px solid #e9b83f;border-radius:14px;display:grid;place-items:center;color:#e9b83f;font-weight:900;font-size:20px}.title{flex:1;font-size:21px;font-weight:900;color:#e9b83f}.sub{font-size:10px;color:#aab4bf;margin-top:3px;letter-spacing:.8px}.help{border:1px solid #e9b83f;border-radius:50%;width:32px;height:32px;text-align:center;padding-top:5px;font-weight:900}
+.card{background:linear-gradient(145deg,#0a1723,#071019);border:1px solid #16334a;border-radius:17px;padding:16px;margin:10px 0;box-shadow:0 8px 25px #0007}.top{display:grid;grid-template-columns:1fr 1.7fr;gap:12px}.label{font-size:12px;color:#aeb8c3}.test{font-size:43px;font-weight:900;margin:5px 0}.next{font-size:13px;color:#e9b83f}.entry{display:flex;gap:7px;margin-top:9px}input{width:100%;background:#07111a;border:1px solid #31516b;border-radius:11px;color:#fff;padding:13px;font-size:16px}button{background:#e9b83f;border:0;border-radius:11px;padding:0 16px;font-weight:900;font-size:15px}.signal{border-color:#a07b22;min-height:190px}.signal.result{border-color:#1d9c62;background:linear-gradient(145deg,#071d15,#06120d)}.await{text-align:center;padding:18px 5px}.brain{font-size:54px;color:#e9b83f}.await h2{margin:8px 0;font-size:27px}.result h2{color:#20e47d}.badge{display:inline-block;padding:7px 12px;border-radius:9px;background:#16283b;color:#f4f7fb;font-weight:900}.result .badge{background:#0d6d43}.small{color:#aeb8c3;font-size:14px}.muted{color:#7f8c99}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{background:#08131e;border:1px solid #1a3346;border-radius:12px;padding:12px}.mini h3{margin:0 0 8px;font-size:14px}.row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #152633;font-size:13px}.row:last-child{border-bottom:0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stats4{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.stat{text-align:center;background:#08131e;border-radius:10px;padding:10px}.stat b{display:block;font-size:21px;margin-top:4px}.gold{color:#e9b83f}.green{color:#22d47b}.red{color:#ff5b5b}.blue{color:#49a3ff}.hidden{display:none}.bottom{position:sticky;bottom:0;background:#050c13ee;backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(4,1fr);padding:9px 2px 10px;border-top:1px solid #152633;z-index:10}.nav{text-align:center;color:#aeb8c3;font-size:11px;cursor:pointer}.nav b{display:block;font-size:21px;margin-bottom:2px}.active{color:#e9b83f}.historyHead{display:grid;grid-template-columns:68px 58px 52px 1fr 66px;gap:4px;color:#aeb8c3;font-size:12px;padding:8px 0;border-bottom:1px solid #1b3447}.historyRow{display:grid;grid-template-columns:68px 58px 52px 1fr 66px;gap:4px;padding:8px 0;border-bottom:1px solid #152633;font-size:12px;align-items:center}.pill{font-weight:800}.pending{color:#e9b83f}.win{color:#22d47b}.loss{color:#ff5b5b}.neutral{color:#aeb8c3}.toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}.toolbar button{padding:9px 12px;font-size:12px}.notice{padding:10px 12px;border:1px solid #31516b;border-radius:12px;color:#aeb8c3;font-size:13px;margin-top:10px}.danger{border-color:#8f3a3a}.version{font-size:10px;color:#778493;text-align:center;padding:14px}
+@media(max-width:430px){.top{grid-template-columns:1fr}.historyHead,.historyRow{grid-template-columns:58px 48px 42px 1fr 58px;font-size:11px}.test{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="menu">☰</div><div class="logo">IA</div><div class="title">IA BANCA FRANCESA<div class="sub">ANÁLISE • ESTRATÉGIA • CONTROLE DE RISCO • v19 • histórico protegido • controle financeiro</div></div><div class="help">?</div></header>
+<section id="home">
+<div class="card top"><div><div class="label">TESTE ATUAL</div><div class="test" id="test">O1128</div><div class="next">PRÓXIMO: <b id="next">O1129</b></div></div><div><div class="label">INSERIR RESULTADO</div><div class="entry"><input id="num" type="number" min="1" max="17" inputmode="numeric" placeholder="1–17"><button onclick="analisar()">ANALISAR</button></div><div class="small">Resultados possíveis: 1 a 17</div></div></div>
+<div class="card signal" id="signal"><div class="await"><div class="brain">◎</div><h2>AGUARDANDO RESULTADO</h2><div class="small">Insira o número sorteado para obter a análise da IA.</div></div></div>
+<div class="grid"><div class="card mini"><h3>◷ ÚLTIMOS RESULTADOS</h3><div id="recent"><div class="row"><span>O1127</span><b>5</b><span class="gold">P</span></div><div class="row"><span>O1126</span><b>15</b><span class="green">G</span></div><div class="row"><span>O1125</span><b>7</b><span class="gold">P</span></div><div class="row"><span>O1124</span><b>4</b><span>N</span></div><div class="row"><span>O1123</span><b>7</b><span class="gold">P</span></div></div></div><div class="card mini"><h3>⌁ SEQUÊNCIA ATUAL</h3><div id="sequence" class="row">N • N • P • G • P</div><div class="row"><span>Última entrada</span><b id="lastEntry">O1119 (G)</b></div></div></div>
+<div class="card"><h3>▥ ESTATÍSTICAS DA IA</h3><div class="stats"><div class="stat">TESTES<b id="tests">1127</b></div><div class="stat green">ENTRADAS<b id="entries">128</b></div><div class="stat blue">PRECISÃO<b id="precision">66.7%</b></div></div><div class="stats4" style="margin-top:7px"><div class="stat">ACERTOS<b id="wins">2</b></div><div class="stat">ERROS<b id="losses">1</b></div><div class="stat">NEUTROS<b id="neutrals">11</b></div><div class="stat pending">PENDENTES<b id="pending">0</b></div></div><div class="notice" id="entryNotice">Nenhuma entrada pendente de avaliação.</div></div>
+<div class="card"><h3>💰 CONTROLE FINANCEIRO</h3><div class="stats4"><div class="stat"><span class="small">Valor por entrada</span><b>€ <input id="stake" type="number" min="0" step="0.01" value="2" style="width:90px;padding:7px;font-size:16px"></b></div><div class="stat"><span class="small">Odd</span><b><input id="odd" type="number" min="1.01" step="0.01" value="2" style="width:90px;padding:7px;font-size:16px"></b></div><div class="stat green"><span class="small">Lucro</span><b id="profit">€ 0,00</b></div><div class="stat red"><span class="small">Perda</span><b id="lossMoney">€ 0,00</b></div><div class="stat"><span class="small">Saldo</span><b id="netMoney">€ 0,00</b></div><div class="stat pending"><span class="small">Investido</span><b id="invested">€ 0,00</b></div></div><div class="notice">Cálculo: acerto = +stake × (odd − 1); erro = −stake; neutro = €0. O histórico financeiro usa os parâmetros atuais apenas para simulação.</div></div>
+<div class="grid"><div class="card mini"><h3>G / P / N</h3><div class="row"><span>G (14–16)</span><b class="green" id="g">3</b></div><div class="row"><span>P (5–7)</span><b class="gold" id="p">5</b></div><div class="row"><span>N (demais)</span><b id="n">19</b></div></div><div class="card mini"><h3>🛡 CONTROLE DE RISCO</h3><div class="row"><span>Entradas seguidas</span><b id="streak">0</b></div><div class="row"><span>Nível</span><b class="green" id="risk">BAIXO</b></div><div class="row"><span>Recomendação</span><b class="green" id="recommend">NORMAL</b></div></div></div>
+</section>
+<section id="history" class="hidden"><div class="card"><div class="toolbar"><h2 style="margin:0">Histórico completo</h2><button onclick="repairHistory()">RECALIBRAR</button></div><div class="small">A coluna <b>Indicação</b> pertence ao teste seguinte. A avaliação financeira compara a indicação de OXXXX com o resultado de OXXXX+1.</div><div class="historyHead"><span>Teste</span><span>Valor</span><span>Classe</span><span>Indicação</span><span>Resultado</span></div><div id="all"></div><div class="notice">Regra V18: resultado G/P/N nunca é, por si só, uma entrada. Uma entrada G só existe quando a IA a emite para o próximo teste.</div></div></section>
+<section id="stats" class="hidden"><div class="card"><h2>Desempenho V18</h2><div class="stats4"><div class="stat">TESTES<b id="stests">1127</b></div><div class="stat green">ENTRADAS<b id="sentries">128</b></div><div class="stat">ACERTOS<b id="swins">2</b></div><div class="stat red">ERROS<b id="slosses">1</b></div><div class="stat">NEUTROS<b id="sneutrals">11</b></div><div class="stat pending">PENDENTES<b id="spending">0</b></div></div><div class="notice">Precisão = acertos ÷ (acertos + erros). Resultados Nulos são neutros e não entram no denominador. Entradas emitidas para o próximo teste permanecem pendentes até esse resultado existir.</div></div></section>
+<nav class="bottom"><div class="nav active" onclick="tab('home',this)"><b>⌂</b>Início</div><div class="nav" onclick="tab('history',this)"><b>☷</b>Histórico</div><div class="nav" onclick="focusInput()"><b>＋</b>Registrar</div><div class="nav" onclick="tab('stats',this)"><b>⌁</b>Desempenho</div></nav>
+<div class="version">IA Banca Francesa • versão 19 • checkpoint O1127 protegido</div>
+</div>
+<script>
+const BASE=1127, KEY='bf_app_v19', MONEY_KEY='bf_money_v19';
+/* V18.3 — checkpoint oficial protegido.
+   Corrige o retorno para O201 e também o bloqueio causado quando o navegador
+   não permite localStorage em arquivos HTML locais. */
+const CHECKPOINT={lastTest:1127,entries:128,wins:2,losses:1,neutrals:11};
+const SEED=[
+ {t:1108,v:6},{t:1109,v:5},{t:1110,v:9},{t:1111,v:10},{t:1112,v:16},
+ {t:1113,v:13},{t:1114,v:7},{t:1115,v:9},{t:1116,v:8},{t:1117,v:12},
+ {t:1118,v:9},{t:1119,v:8},{t:1120,v:12},{t:1121,v:10},{t:1122,v:12},
+ {t:1123,v:7},{t:1124,v:4},{t:1125,v:7},{t:1126,v:15},{t:1127,v:5}
+].map(x=>({...x,c:classifyResult(x.v)}));
+let data=[];
+let storageOK=true;
+function classifyResult(v){if(v>=14&&v<=16)return'G';if(v>=5&&v<=7)return'P';return'N';}
+function readStore(){try{return window.localStorage.getItem(KEY)}catch(e){storageOK=false;return null}}
+function writeStore(){try{window.localStorage.setItem(KEY,JSON.stringify(data));storageOK=true}catch(e){storageOK=false}}
+function scoreNextAt(i){const before=data.slice(0,i+1);if(before.length<6)return['P','AGUARDAR'];const recent=before.slice(-12),gs=recent.filter(x=>x.c==='G').length,ps=recent.filter(x=>x.c==='P').length,ns=recent.filter(x=>x.c==='N').length,last=before[before.length-1];if(last.c==='G')return['P','AGUARDAR'];let score=0;if(gs>=3)score++;if(gs>=4)score++;if(gs>=3&&gs<=6)score++;if(ps<=4)score++;if(ns>=2)score++;if(last.c==='P'&&gs>=3)score++;if(last.c==='N'&&gs>=4)score++;return(score>=4&&gs>=3)?['G','ENTRADA']:['P','AGUARDAR'];}
+function scoreNext(){return scoreNextAt(data.length-1);}
+function rebuildSignals(){data=data.map(x=>({t:x.t,v:x.v,c:classifyResult(x.v)}));for(let i=0;i<data.length;i++){const [nc,ns]=scoreNextAt(i);data[i].nextC=nc;data[i].s=ns;}}
+function load(){let stored=null;try{stored=JSON.parse(readStore()||'null')}catch(e){stored=null}if(Array.isArray(stored)&&stored.length&&stored[stored.length-1].t>=CHECKPOINT.lastTest){data=stored;return;}data=SEED.slice();rebuildSignals();writeStore();}
+function evaluate(){
+  let entries=CHECKPOINT.entries,wins=CHECKPOINT.wins,losses=CHECKPOINT.losses,neutrals=CHECKPOINT.neutrals,pending=0;
+  for(let i=0;i<data.length;i++){
+    if(data[i].t<=BASE) continue;
+    if(data[i].s==='ENTRADA'){
+      entries++;
+      if(i===data.length-1){pending++;continue;}
+      const c=data[i+1].c;
+      if(c==='G')wins++; else if(c==='P')losses++; else neutrals++;
+    }
+  }
+  return {entries,wins,losses,neutrals,pending};
+}
+function getMoney(){try{const x=JSON.parse(localStorage.getItem(MONEY_KEY)||'null');return x&&Number(x.stake)>0&&Number(x.odd)>=1.01?x:{stake:2,odd:2}}catch(e){return {stake:2,odd:2}}}
+function saveMoney(){const stake=Math.max(0,Number(document.getElementById('stake').value)||0),odd=Math.max(1.01,Number(document.getElementById('odd').value)||1.01);const x={stake,odd};try{localStorage.setItem(MONEY_KEY,JSON.stringify(x))}catch(e){};return x}
+function financial(e){
+  const m=getMoney();
+  const settled=e.wins+e.losses;
+  const invested=e.entries*m.stake;
+  const profit=e.wins*m.stake*(m.odd-1);
+  const loss=e.losses*m.stake;
+  return {invested,profit,loss,net:profit-loss,settled};
+}
+function eur(v){return '€ '+Number(v).toFixed(2).replace('.',',')}
+function renderSignal(){const el=document.getElementById('signal');if(!data.length)return;const x=data[data.length-1];const label=x.s==='ENTRADA'?'ENTRADA G':'AGUARDAR • P (auditoria)';el.className='card signal '+(x.s==='ENTRADA'?'result':'');el.innerHTML=`<div class="await"><div class="brain">${x.s==='ENTRADA'?'◉':'◎'}</div><h2>${x.s}</h2><div><span class="badge">${x.c==='G'?'GRANDE (G)':x.c==='P'?'PEQUENO (P)':'NULO (N)'}</span></div><div class="small" style="margin-top:10px">Resultado analisado: <b>${x.v}</b> • Teste O${x.t}</div><div class="small" style="margin-top:8px"><b>Indicação para O${x.t+1}: ${label}</b></div><div class="small" style="margin-top:6px">${x.s==='ENTRADA'?'Esta entrada será avaliada somente quando O'+(x.t+1)+' for registrado.':'Sem entrada financeira neste ciclo.'}</div></div>`;}
+function render(){
+ const current=data.length?data[data.length-1].t+1:BASE+1,next=current+1;
+ document.getElementById('test').textContent='O'+current;document.getElementById('next').textContent='O'+next;
+ document.getElementById('tests').textContent=current-1;document.getElementById('stests').textContent=current-1;
+ const recent=data.slice(-5).reverse();document.getElementById('recent').innerHTML=recent.map(x=>`<div class="row"><span>O${x.t}</span><b>${x.v}</b><span class="${x.c==='G'?'green':x.c==='P'?'gold':''}">${x.c}</span></div>`).join('');
+ document.getElementById('g').textContent=data.filter(x=>x.c==='G').length;document.getElementById('p').textContent=data.filter(x=>x.c==='P').length;document.getElementById('n').textContent=data.filter(x=>x.c==='N').length;
+ const e=evaluate();for(const id of ['entries','sentries'])document.getElementById(id).textContent=e.entries;
+ document.getElementById('wins').textContent=e.wins;document.getElementById('losses').textContent=e.losses;document.getElementById('neutrals').textContent=e.neutrals;document.getElementById('pending').textContent=e.pending;
+ document.getElementById('swins').textContent=e.wins;document.getElementById('slosses').textContent=e.losses;document.getElementById('sneutrals').textContent=e.neutrals;document.getElementById('spending').textContent=e.pending;
+ const settled=e.wins+e.losses;document.getElementById('precision').textContent=settled?((e.wins/settled)*100).toFixed(1)+'%':'—';
+ const lastEntry=data.slice().reverse().find(x=>x.s==='ENTRADA');document.getElementById('lastEntry').textContent=lastEntry?'O'+lastEntry.t:'—';
+ document.getElementById('entryNotice').textContent=e.pending?'Há '+e.pending+' entrada pendente de avaliação no próximo teste.':'Nenhuma entrada pendente de avaliação.';
+ document.getElementById('sequence').textContent=data.slice(-5).map(x=>x.c).join(' • ');
+ let currentStreak=0;for(let i=data.length-1;i>=0&&data[i].s==='ENTRADA';i--)currentStreak++;
+ document.getElementById('streak').textContent=currentStreak;document.getElementById('risk').textContent=currentStreak>=3?'ALTO':currentStreak===2?'MODERADO':'BAIXO';document.getElementById('recommend').textContent=currentStreak>=3?'REDUZIR':currentStreak===2?'CAUTELA':'NORMAL';
+ const m=getMoney();document.getElementById('stake').value=m.stake;document.getElementById('odd').value=m.odd;const f=financial(e);document.getElementById('profit').textContent=eur(f.profit);document.getElementById('lossMoney').textContent=eur(f.loss);document.getElementById('netMoney').textContent=eur(f.net);document.getElementById('invested').textContent=eur(f.invested);
+ renderSignal();renderHistory();
+}
+function renderHistory(){document.getElementById('all').innerHTML=data.slice().reverse().map((x,ri)=>{const i=data.length-1-ri;let outcome='—',cls='neutral';if(x.s==='ENTRADA'){if(i===data.length-1){outcome='PENDENTE';cls='pending'}else{const c=data[i+1].c;outcome=c==='G'?'ACERTO':c==='P'?'ERRO':'NEUTRO';cls=c==='G'?'win':c==='P'?'loss':'neutral'}}return`<div class="historyRow"><span>O${x.t}</span><span>${x.v}</span><b class="${x.c==='G'?'green':x.c==='P'?'gold':''}">${x.c}</b><span class="${x.s==='ENTRADA'?'green':''}">${x.s==='ENTRADA'?'ENTRADA G':'AGUARDAR'}</span><span class="${cls}">${outcome}</span></div>`}).join('')+`<div class="notice">Checkpoint oficial preservado até O${CHECKPOINT.lastTest}. Os resultados anteriores ao checkpoint são apenas referência; as novas entradas são avaliadas sem alterar o histórico oficial.</div>`;}
+function analisar(){const v=Number(document.getElementById('num').value);if(!Number.isInteger(v)||v<1||v>17){alert('Digite um resultado entre 1 e 17.');return}const t=data.length?data[data.length-1].t+1:CHECKPOINT.lastTest+1;if(data.length&&t!==data[data.length-1].t+1){alert('Sequência inválida.');return}data.push({t,v,c:classifyResult(v)});const [nc,ns]=scoreNext();data[data.length-1].nextC=nc;data[data.length-1].s=ns;try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){};document.getElementById('num').value='';render();}
+function repairHistory(){rebuildSignals();try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){};render();alert('V19: indicações recalculadas. O checkpoint O1127 e os números oficiais não foram deslocados.');}
+function saveFinancialSettings(){saveMoney();render();}
+function focusInput(){tab('home',document.querySelector('.nav'));setTimeout(()=>document.getElementById('num').focus(),50)}
+function tab(id,el){['home','history','stats'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+load();render();
+document.getElementById('stake').addEventListener('change',saveFinancialSettings);document.getElementById('odd').addEventListener('change',saveFinancialSettings);
+document.getElementById('num').addEventListener('keydown',e=>{if(e.key==='Enter')analisar()});
+</script>
+</body>
+</html>

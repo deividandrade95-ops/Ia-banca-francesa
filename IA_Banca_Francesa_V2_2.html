@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA Banca Francesa • V2.2</title>
+<style>
+:root{--bg:#07111f;--card:#0d1b2e;--card2:#10233b;--text:#f4f7fb;--muted:#9fb0c5;--line:#213651;--accent:#54a8ff;--green:#35d07f;--red:#ff6875;--yellow:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#07111f,#0a1626);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:980px;margin:auto;padding:18px}.hero,.card{background:rgba(13,27,46,.96);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+h1{font-size:25px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric{background:var(--card2);border-radius:14px;padding:13px}.metric b{display:block;font-size:21px;margin-top:4px}.metric span{color:var(--muted);font-size:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.pill{padding:7px 11px;border-radius:999px;background:#172b45;font-size:13px}.g{color:var(--green)}.p{color:var(--yellow)}.n{color:#b7c5d6}.danger{color:var(--red)}
+button,input,select{font:inherit}button{border:0;border-radius:11px;padding:10px 14px;background:var(--accent);color:#06101c;font-weight:700;cursor:pointer}button.secondary{background:#172b45;color:var(--text)}button.danger{background:#5b2028;color:#fff}
+input,select{background:#091728;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
+.form{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}.full{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted)}
+.notice{padding:12px;border-left:4px solid var(--accent);background:#0b2037;border-radius:10px;color:#cbd8e7}
+.signal{font-size:25px;font-weight:800}.small{font-size:12px;color:var(--muted)}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+@media(max-width:430px){.form{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<h1>IA BANCA FRANCESA • V2.2</h1>
+<div class="sub">ANÁLISE • CALIBRAÇÃO • CONTROLE DE RISCO • CONTROLE FINANCEIRO</div>
+<div class="row" style="margin-top:12px">
+<span class="pill">Histórico protegido</span>
+<span class="pill">Sem previsão por sequência</span>
+<span class="pill">AGUARDAR quando a evidência é insuficiente</span>
+</div>
+</section>
+
+<section class="card">
+<h2>Estado do projeto</h2>
+<div class="grid">
+<div class="metric"><span>Último histórico</span><b id="last">O2373</b></div>
+<div class="metric"><span>Teste atual</span><b id="current">O2374</b></div>
+<div class="metric"><span>Próximo</span><b id="next">O2375</b></div>
+<div class="metric"><span>Indicação</span><b id="signal">AGUARDAR • P</b></div>
+</div>
+<p class="notice" style="margin-bottom:0">O histórico O0001→O2373 não é recriado artificialmente nesta versão. Registros existentes podem ser importados/lançados sem apagar dados anteriores. A indicação financeira só é avaliada depois de existir o resultado do teste correspondente.</p>
+</section>
+
+<section class="card">
+<h2>Calibração</h2>
+<div class="grid">
+<div class="metric"><span>Testes registados</span><b id="tests">0</b></div>
+<div class="metric"><span>Entradas</span><b id="entries">0</b></div>
+<div class="metric"><span>Acertos</span><b class="g" id="wins">0</b></div>
+<div class="metric"><span>Erros</span><b class="danger" id="losses">0</b></div>
+<div class="metric"><span>Neutros</span><b id="neutrals">0</b></div>
+<div class="metric"><span>Precisão</span><b id="precision">—</b></div>
+<div class="metric"><span>Sequência atual</span><b id="sequence">—</b></div>
+<div class="metric"><span>Última entrada</span><b id="lastEntry">—</b></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Controlo financeiro</h2>
+<div class="form">
+<label>Stake (€)<input id="stake" type="number" step="0.01" min="0" value="2"></label>
+<label>Odd<input id="odd" type="number" step="0.01" min="1" value="2"></label>
+<label>Capital (€)<input id="bank" type="number" step="0.01" value="0"></label>
+<label>Nível de risco<select id="risk"><option>Conservador</option><option>Moderado</option><option>Agressivo</option></select></label>
+</div>
+<div class="grid" style="margin-top:12px">
+<div class="metric"><span>Investido</span><b id="invested">€0,00</b></div>
+<div class="metric"><span>Retorno</span><b id="returned">€0,00</b></div>
+<div class="metric"><span>Lucro/Prejuízo</span><b id="profit">€0,00</b></div>
+<div class="metric"><span>ROI</span><b id="roi">—</b></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Registar resultado</h2>
+<div class="form">
+<label>Número do teste<input id="num" type="number" min="1" value="2374"></label>
+<label>Valor<input id="value" type="number" min="0" max="36" placeholder="ex.: 14"></label>
+<label>Indicação<select id="ind"><option value="P|AGUARDAR">AGUARDAR • P</option><option value="G|ENTRADA">ENTRADA • G</option><option value="P|ENTRADA">ENTRADA • P</option></select></label>
+<label>Classe<select id="class"><option value="">Automática</option><option>G</option><option>P</option><option>N</option></select></label>
+<div class="full row">
+<button onclick="addResult()">Registar teste</button>
+<button class="secondary" onclick="exportData()">Exportar histórico JSON</button>
+<button class="secondary" onclick="document.getElementById('importFile').click()">Importar JSON</button>
+<input id="importFile" type="file" accept=".json,application/json" style="display:none" onchange="importData(event)">
+<button class="danger" onclick="resetLocal()">Limpar dados locais</button>
+</div>
+</div>
+<p class="small">Classificação: G = 14–16; P = 5–7; N = restantes valores. A classificação não transforma sequências passadas em garantia do próximo resultado.</p>
+</section>
+
+<section class="card">
+<h2>Últimos registos locais</h2>
+<table><thead><tr><th>Teste</th><th>Valor</th><th>Classe</th><th>Indicação</th><th>Resultado</th></tr></thead><tbody id="history"></tbody></table>
+</section>
+
+<section class="card">
+<h2>Regra V2.2</h2>
+<ul>
+<li>Prioridade à qualidade da entrada e proteção do capital.</li>
+<li>AGUARDAR quando os dados disponíveis não sustentam uma entrada.</li>
+<li>Sequências servem para auditoria, não para afirmar que o próximo resultado será igual ou diferente.</li>
+<li>Acerto/erro financeiro só é contabilizado quando uma ENTRADA tem o resultado seguinte disponível.</li>
+<li>O sistema não inventa resultados históricos ausentes.</li>
+</ul>
+</section>
+</main>
+
+<script>
+const KEY='bf_v22_history';
+const META='bf_v22_finance';
+const CHECKPOINT=2373;
+
+function cls(v){v=Number(v);return v>=14&&v<=16?'G':v>=5&&v<=7?'P':'N'}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function euro(v){return Number(v||0).toLocaleString('pt-PT',{style:'currency',currency:'EUR'})}
+
+function indicationFor(arr){
+  if(!arr.length) return ['P','AGUARDAR'];
+  const r=arr.slice(-12).map(x=>x.class);
+  const g=r.filter(x=>x==='G').length,p=r.filter(x=>x==='P').length,n=r.filter(x=>x==='N').length;
+  if(r.length<6) return ['P','AGUARDAR'];
+  // Evidence threshold only; no "sequence prediction".
+  if(g>=3 && p>=2 && n<=5) return ['G','ENTRADA'];
+  return ['P','AGUARDAR'];
+}
+function refresh(){
+ const a=load();
+ const nums=a.map(x=>Number(x.num)).filter(Number.isFinite);
+ const last=Math.max(CHECKPOINT,...nums,0);
+ const cur=last+1,next=cur+1;
+ const [s,action]=indicationFor(a);
+ document.getElementById('last').textContent='O'+last;
+ document.getElementById('current').textContent='O'+cur;
+ document.getElementById('next').textContent='O'+next;
+ document.getElementById('signal').textContent=action+' • '+s;
+ document.getElementById('tests').textContent=a.length;
+ const entries=a.filter(x=>x.indication==='ENTRADA' && x.evaluated).length;
+ const wins=a.filter(x=>x.outcome==='ACERTO').length;
+ const losses=a.filter(x=>x.outcome==='ERRO').length;
+ const neutrals=a.filter(x=>x.outcome==='NEUTRO').length;
+ const den=wins+losses;
+ document.getElementById('entries').textContent=entries;
+ document.getElementById('wins').textContent=wins;
+ document.getElementById('losses').textContent=losses;
+ document.getElementById('neutrals').textContent=neutrals;
+ document.getElementById('precision').textContent=den?(100*wins/den).toFixed(1)+'%':'—';
+ document.getElementById('sequence').textContent=a.slice(-5).map(x=>x.class).join(' • ')||'—';
+ const le=a.filter(x=>x.indication==='ENTRADA').slice(-1)[0];
+ document.getElementById('lastEntry').textContent=le?'O'+le.num:'—';
+ let inv=0,ret=0;
+ a.forEach(x=>{if(x.indication==='ENTRADA'&&x.evaluated){inv+=Number(x.stake||2);if(x.outcome==='ACERTO')ret+=Number(x.stake||2)*Number(x.odd||2);}});
+ document.getElementById('invested').textContent=euro(inv);
+ document.getElementById('returned').textContent=euro(ret);
+ document.getElementById('profit').textContent=euro(ret-inv);
+ document.getElementById('roi').textContent=inv?(100*(ret-inv)/inv).toFixed(1)+'%':'—';
+ const tb=document.getElementById('history');tb.innerHTML='';
+ a.slice(-30).reverse().forEach(x=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td>O'+x.num+'</td><td>'+x.value+'</td><td>'+x.class+'</td><td>'+x.indication+' • '+x.signalClass+'</td><td>'+(x.outcome||'PENDENTE')+'</td>';
+  tb.appendChild(tr);
+ });
+}
+function addResult(){
+ const num=Number(document.getElementById('num').value), value=Number(document.getElementById('value').value);
+ if(!num||Number.isNaN(value)){alert('Informe o número e o valor do teste.');return}
+ const a=load(); if(a.some(x=>x.num===num)){alert('Esse teste já existe nos dados locais.');return}
+ const selected=document.getElementById('ind').value.split('|');
+ const manual=document.getElementById('class').value;
+ const c=manual||cls(value);
+ const item={num,value,class:c,indication:selected[1],signalClass:selected[0],evaluated:false,stake:Number(document.getElementById('stake').value||2),odd:Number(document.getElementById('odd').value||2),outcome:null};
+ // Evaluate the previous ENTRADA against this result.
+ const prev=a.slice().sort((x,y)=>x.num-y.num).reverse().find(x=>Number(x.num)===num-1 && x.indication==='ENTRADA' && !x.evaluated);
+ if(prev){
+   prev.evaluated=true;
+   if(c===prev.signalClass) prev.outcome='ACERTO';
+   else if(c==='N') prev.outcome='NEUTRO';
+   else prev.outcome='ERRO';
+ }
+ a.push(item);a.sort((x,y)=>x.num-y.num);save(a);
+ document.getElementById('num').value=num+1;document.getElementById('value').value='';
+ refresh();
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify(load(),null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='IA_Banca_Francesa_V2_2_historico.json';a.click();URL.revokeObjectURL(url);
+}
+function importData(ev){
+ const f=ev.target.files[0];if(!f)return;
+ const rd=new FileReader();rd.onload=()=>{try{const x=JSON.parse(rd.result);if(!Array.isArray(x))throw Error();save(x);refresh();alert('Histórico importado.');}catch(e){alert('JSON inválido.');}};rd.readAsText(f);
+}
+function resetLocal(){if(confirm('Limpar apenas os dados locais desta V2.2? O ficheiro do GitHub não será apagado.')){localStorage.removeItem(KEY);refresh()}}
+refresh();
+</script>
+</body>
+</html>

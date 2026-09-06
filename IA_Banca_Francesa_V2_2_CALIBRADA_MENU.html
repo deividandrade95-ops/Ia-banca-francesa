@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#050c13">
+<title>IA Banca Francesa • V2.2 Calibrada</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#02070c;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:560px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);background:linear-gradient(#02070c,#06101a)}
+.header{display:flex;align-items:center;gap:10px;padding:17px 2px 13px;position:sticky;top:0;background:#02070cf2;backdrop-filter:blur(12px);z-index:20}
+.menuBtn,.helpBtn{width:36px;height:36px;border:1px solid #24455e;background:#08131e;color:#e9b83f;border-radius:11px;display:grid;place-items:center;font-weight:900;cursor:pointer}
+.menuBtn{font-size:21px}.helpBtn{border-radius:50%;font-size:16px}
+.logo{width:46px;height:46px;border:2px solid #e9b83f;border-radius:13px;display:grid;place-items:center;color:#e9b83f;font-weight:900;font-size:18px}
+.title{flex:1;font-size:19px;font-weight:900;color:#e9b83f;line-height:1.05}
+.sub{font-size:9px;color:#aab4bf;margin-top:4px;letter-spacing:.65px}
+.card{background:linear-gradient(145deg,#0a1723,#071019);border:1px solid #16334a;border-radius:17px;padding:16px;margin:10px 0;box-shadow:0 8px 25px #0007}
+.top{display:grid;grid-template-columns:1fr 1.5fr;gap:12px}.label{font-size:11px;color:#aeb8c3}.test{font-size:43px;font-weight:900;margin:4px 0}.next{font-size:13px;color:#e9b83f}
+.entry{display:flex;gap:7px;margin-top:8px}input,select{width:100%;background:#07111a;border:1px solid #31516b;border-radius:11px;color:#fff;padding:12px;font-size:16px}button{background:#e9b83f;color:#101010;border:0;border-radius:11px;padding:0 15px;font-weight:900;font-size:14px;cursor:pointer}
+.small{color:#aeb8c3;font-size:13px}.muted{color:#7f8c99;font-size:12px}
+.signal{min-height:170px;border-color:#a07b22}.signal.result{border-color:#1d9c62;background:linear-gradient(145deg,#071d15,#06120d)}
+.await{text-align:center;padding:14px 5px}.brain{font-size:48px;color:#e9b83f}.await h2{margin:6px 0;font-size:25px}.result h2{color:#20e47d}
+.badge{display:inline-block;padding:6px 11px;border-radius:9px;background:#16283b;font-weight:900}.result .badge{background:#0d6d43}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{padding:13px}.mini h3{margin:0 0 8px;font-size:13px}
+.row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #152633;font-size:13px}.row:last-child{border-bottom:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stats4{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.stat{text-align:center;background:#08131e;border-radius:10px;padding:10px}.stat b{display:block;font-size:20px;margin-top:4px}
+.gold{color:#e9b83f}.green{color:#22d47b}.red{color:#ff5b5b}.blue{color:#49a3ff}.pending{color:#e9b83f}
+.notice{padding:10px 12px;border:1px solid #31516b;border-radius:12px;color:#aeb8c3;font-size:12px;margin-top:10px}
+.historyHead,.historyRow{display:grid;grid-template-columns:58px 45px 40px 1fr 58px;gap:4px}.historyHead{color:#aeb8c3;font-size:11px;padding:8px 0;border-bottom:1px solid #1b3447}.historyRow{padding:8px 0;border-bottom:1px solid #152633;font-size:11px;align-items:center}
+.hidden{display:none}.bottom{position:sticky;bottom:0;background:#050c13ee;backdrop-filter:blur(12px);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 2px 10px;border-top:1px solid #152633;z-index:10}
+.nav{text-align:center;color:#aeb8c3;font-size:10px;cursor:pointer}.nav b{display:block;font-size:20px;margin-bottom:2px}.active{color:#e9b83f}
+.toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between}.toolbar button{padding:8px 11px;font-size:11px}
+.version{font-size:10px;color:#778493;text-align:center;padding:14px}
+.overlay{position:fixed;inset:0;background:#0009;z-index:50;display:none}.overlay.open{display:block}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:min(88%,420px);background:#071019;border-right:1px solid #24455e;padding:calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 14px);overflow:auto;box-shadow:12px 0 35px #0009}
+.drawerHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.drawer h2{margin:0;color:#e9b83f;font-size:20px}.close{width:36px;height:36px;border-radius:50%;border:1px solid #31516b;background:#0b1824;color:#fff;font-size:20px}
+.menuItem{width:100%;text-align:left;background:#0b1824;color:#f4f7fb;border:1px solid #1c3b52;padding:12px;margin:6px 0;border-radius:11px;font-size:13px}
+.panel{background:#0a1723;border:1px solid #16334a;border-radius:13px;padding:12px;margin:8px 0}.panel h3{margin:0 0 9px;font-size:14px;color:#e9b83f}.panel p{margin:7px 0}.panel ul{margin:7px 0 0;padding-left:19px}.panel li{margin:6px 0;font-size:12px;color:#c5d0da}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:6px;border-bottom:1px solid #213651;text-align:left}th{color:#9fb0c5}
+.menuSection{display:none}.menuSection.show{display:block}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:8px}.full{grid-column:1/-1}
+@media(max-width:430px){.top{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.test{font-size:40px}.drawer{width:92%}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<button class="menuBtn" onclick="openMenu()" aria-label="Menu">☰</button>
+<div class="logo">IA</div>
+<div class="title">IA BANCA FRANCESA<div class="sub">ANÁLISE • ESTRATÉGIA • CONTROLE DE RISCO • V2.2</div></div>
+<button class="helpBtn" onclick="openMenu('ajuda')" aria-label="Ajuda">?</button>
+</header>
+
+<section id="home">
+<div class="card top">
+<div><div class="label">TESTE ATUAL</div><div class="test" id="test">O2374</div><div class="next">PRÓXIMO: <b id="next">O2375</b></div></div>
+<div><div class="label">INSERIR RESULTADO</div><div class="entry"><input id="value" type="number" min="1" max="17" inputmode="numeric" placeholder="1–17"><button onclick="regFromHome()">REGISTAR</button></div><div class="small">Resultado possível: 1 a 17</div></div>
+</div>
+
+<div class="card signal" id="signal"><div class="await"><div class="brain">◎</div><h2 id="signalTitle">AGUARDANDO RESULTADO</h2><div class="small" id="signalText">A indicação atual é <b class="gold">AGUARDAR • P</b>. Regista o resultado do teste para fechar a avaliação.</div></div></div>
+
+<div class="grid">
+<div class="card mini"><h3>◷ ÚLTIMOS RESULTADOS</h3><div id="recent"></div></div>
+<div class="card mini"><h3>⌁ SEQUÊNCIA ATUAL</h3><div id="sequence" class="row">—</div><div class="row"><span>Última entrada</span><b id="lastEntry">—</b></div></div>
+</div>
+
+<div class="card"><h3>▥ ESTATÍSTICAS DA IA</h3>
+<div class="stats"><div class="stat">TESTES<b id="tests">2373</b></div><div class="stat green">ENTRADAS<b id="entries">0</b></div><div class="stat blue">PRECISÃO<b id="precision">—</b></div></div>
+<div class="stats4" style="margin-top:7px"><div class="stat">ACERTOS<b id="wins">0</b></div><div class="stat">ERROS<b id="losses">0</b></div><div class="stat">NEUTROS<b id="neutrals">0</b></div><div class="stat pending">PENDENTES<b id="pending">0</b></div></div>
+<div class="notice" id="entryNotice">A auditoria começa com os testes registados nesta versão.</div></div>
+
+<div class="card"><h3>💰 CONTROLE FINANCEIRO</h3>
+<div class="stats4"><div class="stat"><span class="small">Valor por entrada</span><b>€ <input id="stake" type="number" min="0" step="0.01" value="2" style="width:82px;padding:7px;font-size:15px"></b></div>
+<div class="stat"><span class="small">Odd</span><b><input id="odd" type="number" min="1.01" step="0.01" value="2" style="width:82px;padding:7px;font-size:15px"></b></div>
+<div class="stat green"><span class="small">Lucro</span><b id="profit">€ 0,00</b></div><div class="stat red"><span class="small">Perda</span><b id="lossMoney">€ 0,00</b></div>
+<div class="stat"><span class="small">Saldo</span><b id="netMoney">€ 0,00</b></div><div class="stat pending"><span class="small">Investido</span><b id="invested">€ 0,00</b></div></div>
+<div class="notice">Simulação financeira separada da indicação. Não representa garantia de lucro.</div></div>
+
+<div class="grid">
+<div class="card mini"><h3>G / P / N • JANELA ATUAL</h3><div class="row"><span>G (14–16)</span><b class="green" id="g">0</b></div><div class="row"><span>P (5–7)</span><b class="gold" id="p">0</b></div><div class="row"><span>N</span><b id="n">0</b></div></div>
+<div class="card mini"><h3>🛡 CONTROLE DE RISCO</h3><div class="row"><span>Entradas seguidas</span><b id="streak">0</b></div><div class="row"><span>Nível</span><b class="green" id="risk">BAIXO</b></div><div class="row"><span>Recomendação</span><b class="green" id="recommend">AGUARDAR</b></div></div>
+</div>
+
+<div class="card"><div class="toolbar"><h3 style="margin:0">REGISTAR RESULTADO</h3><button onclick="openMenu('regras')">☰ MENU</button></div>
+<div class="form"><label>Teste<input id="num" type="number" min="2374" value="2374"></label>
+<label>Valor<input id="value2" type="number" min="1" max="17" placeholder="1–17"></label>
+<label>Indicação<select id="ind"><option>AGUARDAR • P</option><option>ENTRADA • G</option></select></label>
+<label>Classe<select id="class"><option>Automática</option><option>G</option><option>P</option><option>N</option></select></label>
+<div class="full"><button style="width:100%;padding:12px" onclick="reg()">Registar teste</button></div></div>
+<div style="margin-top:12px" class="historyHead"><span>Teste</span><span>Valor</span><span>Classe</span><span>Indicação</span><span>Avaliação</span></div><div id="hist"></div>
+</div>
+</section>
+
+<section id="history" class="hidden"><div class="card"><div class="toolbar"><h2 style="margin:0">Histórico</h2><button onclick="tab('home')">Início</button></div><div id="all"></div></div></section>
+
+<nav class="bottom"><div class="nav active" onclick="tab('home',this)"><b>⌂</b>Início</div><div class="nav" onclick="tab('history',this)"><b>☷</b>Histórico</div><div class="nav" onclick="focusInput()"><b>＋</b>Registar</div><div class="nav" onclick="openMenu()"><b>☰</b>Menu</div></nav>
+<div class="version">IA Banca Francesa • V2.2 Calibrada • interface móvel</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeMenu(event)">
+<aside class="drawer" onclick="event.stopPropagation()">
+<div class="drawerHead"><h2>☰ Menu da IA</h2><button class="close" onclick="closeMenu()">×</button></div>
+<button class="menuItem" onclick="showPanel('estado')">📊 Estado e checkpoints</button>
+<button class="menuItem" onclick="showPanel('calibracao')">🧠 Calibração recuperada</button>
+<button class="menuItem" onclick="showPanel('base')">📈 Base-rate confirmado</button>
+<button class="menuItem" onclick="showPanel('regras')">🛡 Regras da versão calibrada</button>
+<button class="menuItem" onclick="showPanel('dados')">📋 Dados exatos incorporados</button>
+<button class="menuItem" onclick="showPanel('ajuda')">ℹ️ Como usar</button>
+
+<div id="panel-estado" class="menuSection panel"><h3>Estado atual</h3><p>Último histórico: <b>O2373</b></p><p>Teste atual: <b id="menuTest">O2374</b></p><p>Próximo: <b id="menuNext">O2375</b></p><p>Indicação: <b class="gold">AGUARDAR • P</b></p><p class="muted">O histórico não é preenchido por estimativa.</p></div>
+<div id="panel-calibracao" class="menuSection panel"><h3>Calibração recuperada</h3><p>Registos exatos: <b>24</b></p><p>Base O001–O200: <b>200</b></p><p>Entradas em O200: <b>28</b></p><p>Precisão O200: <b class="green">53,6%</b></p><p>Checkpoint O1037: <b>115 entradas</b></p><p>Checkpoint O1097: <b>126 entradas</b></p><p>Checkpoint O1127: <b>128 entradas</b></p><p>Resolvidos O1127: <b class="green">2/3 = 66,7%</b></p><p class="muted">O1127: 2 acertos, 1 erro e 11 neutros. Não representa precisão de todos os 2.373 testes.</p></div>
+<div id="panel-base" class="menuSection panel"><h3>Base-rate O001–O200</h3><p>G 14–16: <b>18 • 9,0%</b></p><p>P 5–7: <b>10 • 5,0%</b></p><p>N restantes: <b>172 • 86,0%</b></p><p>Total: <b>200</b></p></div>
+<div id="panel-regras" class="menuSection panel"><h3>Regra calibrada</h3><ul><li>Janela de 12 resultados.</li><li>Não usa a ordem da sequência como previsão.</li><li>Entrada G apenas com pelo menos 3 G em 12 resultados (25%).</li><li>Exige pelo menos 1 P e 2 N na janela.</li><li>Bloqueia entrada automática quando o último resultado é G.</li><li>AGUARDAR • P é a saída padrão quando a evidência é insuficiente.</li><li>Acerto/erro/neutro só é fechado quando o teste seguinte existir.</li></ul></div>
+<div id="panel-dados" class="menuSection panel"><h3>Dados exatos incorporados</h3><table><thead><tr><th>Teste</th><th>Valor</th><th>Classe</th></tr></thead><tbody>
+<tr><td>O1108</td><td>6</td><td>P</td></tr><tr><td>O1109</td><td>5</td><td>P</td></tr><tr><td>O1110</td><td>9</td><td>N</td></tr><tr><td>O1111</td><td>10</td><td>N</td></tr><tr><td>O1112</td><td>16</td><td>G</td></tr><tr><td>O1113</td><td>13</td><td>N</td></tr><tr><td>O1114</td><td>7</td><td>P</td></tr><tr><td>O1115</td><td>9</td><td>N</td></tr><tr><td>O1116</td><td>8</td><td>N</td></tr><tr><td>O1117</td><td>12</td><td>N</td></tr><tr><td>O1118</td><td>9</td><td>N</td></tr><tr><td>O1119</td><td>8</td><td>N</td></tr><tr><td>O1120</td><td>12</td><td>N</td></tr><tr><td>O1121</td><td>10</td><td>N</td></tr><tr><td>O1122</td><td>12</td><td>N</td></tr><tr><td>O1123</td><td>7</td><td>P</td></tr><tr><td>O1124</td><td>4</td><td>N</td></tr><tr><td>O1125</td><td>7</td><td>P</td></tr><tr><td>O1126</td><td>15</td><td>G</td></tr><tr><td>O1127</td><td>5</td><td>P</td></tr><tr><td>O1678</td><td>5</td><td>P</td></tr><tr><td>O1910</td><td>12</td><td>N</td></tr><tr><td>O2009</td><td>16</td><td>G</td></tr><tr><td>O2180</td><td>15</td><td>G</td></tr>
+</tbody></table><p class="muted">O1114: V18.2 mostrava 14, V19 posterior usa 7; a calibração adota 7.</p></div>
+<div id="panel-ajuda" class="menuSection panel"><h3>Como usar</h3><p>1. Veja a indicação atual.</p><p>2. Registe o número sorteado.</p><p>3. A classe G/P/N é calculada automaticamente.</p><p>4. A avaliação de uma entrada só fecha quando existir o resultado seguinte.</p><p>5. Use o menu para consultar calibração e regras sem ocupar a tela principal.</p></div>
+</aside></div>
+
+<script>
+const KEY='bf_v22_calibrated_local';
+function cls(v){return v>=14&&v<=16?'G':v>=5&&v<=7?'P':'N'}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function indicationFor(arr){
+ if(!arr.length)return['P','AGUARDAR'];
+ const r=arr.slice(-12).map(x=>x.class),g=r.filter(x=>x==='G').length,p=r.filter(x=>x==='P').length,n=r.filter(x=>x==='N').length;
+ if(r.length<6)return['P','AGUARDAR'];
+ if(r[r.length-1]==='G')return['P','AGUARDAR'];
+ return(g>=3&&p>=1&&n>=2)?['G','ENTRADA']:['P','AGUARDAR'];
+}
+function currentTest(){const a=load();return a.length?Math.max(...a.map(x=>x.num))+1:2374}
+function reg(){
+ const num=+document.getElementById('num').value,val=+document.getElementById('value2').value;
+ if(!Number.isInteger(num)||num<2374||!Number.isInteger(val)||val<1||val>17)return alert('Teste >= O2374 e valor 1–17.');
+ let a=load();if(a.some(x=>x.num===num))return alert('Teste já registado.');
+ const ind=document.getElementById('ind').value,manual=document.getElementById('class').value,c=manual==='Automática'?cls(val):manual;
+ const prev=a.find(x=>x.num===num-1&&x.ind&&x.ind.startsWith('ENTRADA')&&!x.outcome);
+ if(prev)prev.outcome=c===prev.signal?'ACERTO':c==='N'?'NEUTRO':'ERRO';
+ a.push({num,value:val,class:c,ind,signal:ind.includes('G')?'G':'P',outcome:null});a.sort((x,y)=>x.num-y.num);save(a);
+ document.getElementById('num').value=num+1;document.getElementById('value2').value='';document.getElementById('value').value='';render();
+}
+function regFromHome(){
+ const n=currentTest();document.getElementById('num').value=n;document.getElementById('value2').value=document.getElementById('value').value;reg();
+}
+function render(){
+ const a=load(),t=currentTest(),ind=indicationFor(a),h=document.getElementById('hist');
+ document.getElementById('test').textContent='O'+String(t).padStart(4,'0');document.getElementById('next').textContent='O'+String(t+1).padStart(4,'0');
+ document.getElementById('menuTest').textContent='O'+String(t).padStart(4,'0');document.getElementById('menuNext').textContent='O'+String(t+1).padStart(4,'0');
+ document.getElementById('ind').value=ind[1]==='ENTRADA'?'ENTRADA • G':'AGUARDAR • P';
+ const recent=document.getElementById('recent');recent.innerHTML='';
+ a.slice(-5).reverse().forEach(x=>recent.innerHTML+='<div class="row"><span>O'+x.num+'</span><b>'+x.value+'</b><span class="'+(x.class==='G'?'green':x.class==='P'?'gold':'')+'">'+x.class+'</span></div>');
+ const last=a.slice(-12),seq=last.map(x=>x.class).join(' • ');document.getElementById('sequence').textContent=seq||'—';
+ const entries=a.filter(x=>x.ind&&x.ind.startsWith('ENTRADA')).length,wins=a.filter(x=>x.outcome==='ACERTO').length,losses=a.filter(x=>x.outcome==='ERRO').length,neutrals=a.filter(x=>x.outcome==='NEUTRO').length,pending=a.filter(x=>x.ind&&x.ind.startsWith('ENTRADA')&&!x.outcome).length;
+ document.getElementById('tests').textContent=Math.max(2373,a.length+2373);
+ document.getElementById('entries').textContent=entries;document.getElementById('wins').textContent=wins;document.getElementById('losses').textContent=losses;document.getElementById('neutrals').textContent=neutrals;document.getElementById('pending').textContent=pending;document.getElementById('precision').textContent=(wins+losses)?(wins/(wins+losses)*100).toFixed(1)+'%':'—';
+ const e=a.filter(x=>x.ind&&x.ind.startsWith('ENTRADA')).slice(-1)[0];document.getElementById('lastEntry').textContent=e?'O'+e.num+' ('+e.signal+')':'—';
+ const recent12=a.slice(-12);document.getElementById('g').textContent=recent12.filter(x=>x.class==='G').length;document.getElementById('p').textContent=recent12.filter(x=>x.class==='P').length;document.getElementById('n').textContent=recent12.filter(x=>x.class==='N').length;
+ document.getElementById('recommend').textContent=ind[1]==='ENTRADA'?'ENTRADA G':'AGUARDAR';document.getElementById('risk').textContent=pending?'ATENÇÃO':'BAIXO';
+ h.innerHTML='';a.slice(-40).reverse().forEach(x=>h.innerHTML+='<div class="historyRow"><span>O'+x.num+'</span><span>'+x.value+'</span><span>'+x.class+'</span><span>'+x.ind+'</span><span>'+(x.outcome||'PENDENTE')+'</span></div>');
+ document.getElementById('signalText').innerHTML='Indicação atual: <b class="'+(ind[1]==='ENTRADA'?'green':'gold')+'">'+ind[1]+' • '+ind[0]+'</b>. Regista o resultado para avançar o teste.';
+}
+function tab(id,el){document.getElementById('home').classList.toggle('hidden',id!=='home');document.getElementById('history').classList.toggle('hidden',id!=='history');document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');if(id==='history'){document.getElementById('all').innerHTML=document.getElementById('hist').innerHTML}}
+function focusInput(){document.getElementById('value').focus();window.scrollTo({top:0,behavior:'smooth'})}
+function openMenu(panel){document.getElementById('overlay').classList.add('open');if(panel)showPanel(panel)}
+function closeMenu(e){if(!e||e.target.id==='overlay')document.getElementById('overlay').classList.remove('open')}
+function showPanel(name){document.querySelectorAll('.menuSection').forEach(x=>x.classList.remove('show'));const p=document.getElementById('panel-'+name);if(p)p.classList.add('show')}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IA Banca Francesa • V2.2 Calibrada</title>
+<style>
+body{margin:0;background:#07111f;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:900px;margin:auto;padding:16px}.card{background:#0d1b2e;border:1px solid #213651;border-radius:16px;padding:16px;margin-bottom:12px}
+h1{margin:0 0 5px;font-size:24px}.muted{color:#9fb0c5;font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.m{background:#10233b;border-radius:12px;padding:11px}.m b{display:block;font-size:19px;margin-top:4px}.ok{color:#35d07f}.warn{color:#ffd166}.bad{color:#ff6875}
+input,select,button{font:inherit;border-radius:9px;padding:10px}input,select{width:100%;box-sizing:border-box;background:#091728;color:#fff;border:1px solid #213651}button{border:0;background:#54a8ff;font-weight:700}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.full{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:7px;border-bottom:1px solid #213651;text-align:left}th{color:#9fb0c5}
+.note{padding:10px;border-left:4px solid #54a8ff;background:#0b2037;border-radius:8px;font-size:12px}
+@media(max-width:650px){.grid,.form{grid-template-columns:1fr 1fr}}@media(max-width:430px){.grid,.form{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<section class="card"><h1>IA BANCA FRANCESA • V2.2</h1>
+<div class="muted">CALIBRAÇÃO COM HISTÓRICO RECUPERADO • CONTROLE DE RISCO • OPERAÇÃO MANUAL</div>
+<p class="note">Histórico protegido: O0001→O2373 não é preenchido por estimativa. Só os valores individualmente suportados são incorporados; lacunas continuam lacunas.</p></section>
+
+<section class="card"><h2>Estado</h2><div class="grid">
+<div class="m"><span class="muted">Último histórico</span><b>O2373</b></div>
+<div class="m"><span class="muted">Teste atual</span><b>O2374</b></div>
+<div class="m"><span class="muted">Próximo</span><b>O2375</b></div>
+<div class="m"><span class="muted">Indicação inicial</span><b class="warn">AGUARDAR • P</b></div>
+</div></section>
+
+<section class="card"><h2>Calibração recuperada</h2><div class="grid">
+<div class="m"><span class="muted">Registos exatos</span><b>24</b></div>
+<div class="m"><span class="muted">Base O001–O200</span><b>200</b></div>
+<div class="m"><span class="muted">Entradas em O200</span><b>28</b></div>
+<div class="m"><span class="muted">Precisão O200</span><b class="ok">53,6%</b></div>
+<div class="m"><span class="muted">Checkpoint O1037</span><b>115 entradas</b></div>
+<div class="m"><span class="muted">Checkpoint O1097</span><b>126 entradas</b></div>
+<div class="m"><span class="muted">Checkpoint O1127</span><b>128 entradas</b></div>
+<div class="m"><span class="muted">Resolvidos O1127</span><b class="ok">2/3 = 66,7%</b></div>
+</div>
+<p class="muted">O1127: 2 acertos, 1 erro e 11 neutros. Os neutros não entram no denominador. Isto não representa precisão de todos os 2.373 testes.</p></section>
+
+<section class="card"><h2>Base-rate confirmado</h2><div class="grid">
+<div class="m"><span class="muted">G 14–16</span><b>18 • 9,0%</b></div>
+<div class="m"><span class="muted">P 5–7</span><b>10 • 5,0%</b></div>
+<div class="m"><span class="muted">N restantes</span><b>172 • 86,0%</b></div>
+<div class="m"><span class="muted">Total</span><b>200</b></div>
+</div></section>
+
+<section class="card"><h2>Dados exatos incorporados</h2>
+<table><thead><tr><th>Teste</th><th>Valor</th><th>Classe</th></tr></thead><tbody>
+<tr><td>O1108</td><td>6</td><td>P</td></tr><tr><td>O1109</td><td>5</td><td>P</td></tr>
+<tr><td>O1110</td><td>9</td><td>N</td></tr><tr><td>O1111</td><td>10</td><td>N</td></tr>
+<tr><td>O1112</td><td>16</td><td>G</td></tr><tr><td>O1113</td><td>13</td><td>N</td></tr>
+<tr><td>O1114</td><td>7</td><td>P</td></tr><tr><td>O1115</td><td>9</td><td>N</td></tr>
+<tr><td>O1116</td><td>8</td><td>N</td></tr><tr><td>O1117</td><td>12</td><td>N</td></tr>
+<tr><td>O1118</td><td>9</td><td>N</td></tr><tr><td>O1119</td><td>8</td><td>N</td></tr>
+<tr><td>O1120</td><td>12</td><td>N</td></tr><tr><td>O1121</td><td>10</td><td>N</td></tr>
+<tr><td>O1122</td><td>12</td><td>N</td></tr><tr><td>O1123</td><td>7</td><td>P</td></tr>
+<tr><td>O1124</td><td>4</td><td>N</td></tr><tr><td>O1125</td><td>7</td><td>P</td></tr>
+<tr><td>O1126</td><td>15</td><td>G</td></tr><tr><td>O1127</td><td>5</td><td>P</td></tr>
+<tr><td>O1678</td><td>5</td><td>P</td></tr><tr><td>O1910</td><td>12</td><td>N</td></tr>
+<tr><td>O2009</td><td>16</td><td>G</td></tr><tr><td>O2180</td><td>15</td><td>G</td></tr>
+</tbody></table>
+<p class="muted">O1114 tinha conflito entre versões: V18.2 mostrava 14, enquanto a V19 posterior usa 7. A calibração adota o registro posterior V19.</p></section>
+
+<section class="card"><h2>Regra calibrada</h2><ul>
+<li>Janela de 12 resultados para medir composição histórica, sem usar a ordem da sequência como previsão.</li>
+<li>Entrada G somente quando houver pelo menos 3 G em 12 resultados (25%), limiar acima do base-rate de 9% da base O001–O200.</li>
+<li>Exige também pelo menos 1 P e 2 N na janela como filtro de qualidade; se não cumprir, AGUARDAR.</li>
+<li>Bloqueia entrada automática quando o último resultado é G.</li>
+<li>AGUARDAR • P é a saída padrão quando a evidência é insuficiente.</li>
+<li>Acerto/erro/neutralidade só é fechado quando o teste seguinte existir.</li>
+</ul></section>
+
+<section class="card"><h2>Registrar O2374+</h2><div class="form">
+<label>Teste<input id="num" type="number" min="2374" value="2374"></label>
+<label>Valor<input id="value" type="number" min="1" max="17" placeholder="1–17"></label>
+<label>Indicação<select id="ind"><option>AGUARDAR • P</option><option>ENTRADA • G</option></select></label>
+<label>Classe<select id="class"><option>Automática</option><option>G</option><option>P</option><option>N</option></select></label>
+<div class="full"><button onclick="reg()">Registar</button></div></div>
+<table><thead><tr><th>Teste</th><th>Valor</th><th>Classe</th><th>Indicação</th><th>Avaliação</th></tr></thead><tbody id="hist"></tbody></table></section>
+</main>
+<script>
+const KEY='bf_v22_calibrated_local';
+const recovered=[1108,1109,1110,1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,1121,1122,1123,1124,1125,1126,1127,1678,1910,2009,2180];
+function cls(v){return v>=14&&v<=16?'G':v>=5&&v<=7?'P':'N'}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+function save(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function reg(){
+ const num=+document.getElementById('num').value,val=+document.getElementById('value').value;
+ if(!Number.isInteger(num)||num<2374||!Number.isInteger(val)||val<1||val>17)return alert('Teste >= O2374 e valor 1–17.');
+ let a=load(); if(a.some(x=>x.num===num))return alert('Teste já registado.');
+ const ind=document.getElementById('ind').value, manual=document.getElementById('class').value;
+ const c=manual==='Automática'?cls(val):manual;
+ const prev=a.find(x=>x.num===num-1&&x.ind.startsWith('ENTRADA')&&!x.outcome);
+ if(prev)prev.outcome=c===prev.signal?'ACERTO':c==='N'?'NEUTRO':'ERRO';
+ a.push({num,value:val,class:c,ind,signal:ind.includes('G')?'G':'P',outcome:null});a.sort((x,y)=>x.num-y.num);save(a);
+ document.getElementById('num').value=num+1;document.getElementById('value').value='';render();
+}
+function render(){const a=load(),h=document.getElementById('hist');h.innerHTML='';a.slice(-40).reverse().forEach(x=>h.innerHTML+='<tr><td>O'+x.num+'</td><td>'+x.value+'</td><td>'+x.class+'</td><td>'+x.ind+'</td><td>'+(x.outcome||'PENDENTE')+'</td>')}
+render();
+</script></body></html>

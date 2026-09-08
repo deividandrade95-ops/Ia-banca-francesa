@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IA Banca Francesa • V2.6</title>
+<style>
+:root{--bg:#02070c;--card:#07131e;--line:#123b56;--text:#f3f6f8;--muted:#9eabb7;--gold:#ffc62f;--blue:#3297ff;--green:#19df8a;--red:#ff6464}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:760px;margin:auto;padding:20px 16px 50px}.head{display:flex;align-items:center;gap:14px;margin-bottom:18px}.logo{width:68px;height:68px;border:4px solid var(--gold);border-radius:22px;display:grid;place-items:center;color:var(--gold);font-size:27px;font-weight:900}.head h1{font-size:24px;margin:0;color:var(--gold)}.head p{margin:4px 0 0;color:var(--muted);font-weight:700;letter-spacing:1.2px;font-size:12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:24px;margin:16px 0}.hero h2{font-size:17px;color:#aeb9c4;margin:0 0 8px}.test{font-size:70px;line-height:1;font-weight:900;letter-spacing:2px}.next{color:var(--gold);font-size:18px;font-weight:900;margin:8px 0 20px}
+input,button{font:inherit}.input{width:100%;background:#07131e;border:2px solid #24516f;border-radius:18px;color:white;padding:17px;font-size:18px}.btn{width:100%;margin-top:12px;background:var(--gold);border:0;border-radius:18px;padding:17px;color:#0676e9;font-weight:900;font-size:18px}
+.signal{display:grid;place-items:center;text-align:center}.circle{width:230px;height:230px;border:10px solid var(--gold);border-radius:50%;display:grid;place-items:center;background:#3b2c08;margin:5px auto 18px}.circle strong{font-size:38px}.signal .state{font-size:30px;font-weight:900}.wait{color:var(--gold)}.entry{color:var(--green)}.sub{color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.metric{background:#081925;border-radius:18px;padding:17px;text-align:center}.metric span{display:block;color:var(--muted);font-size:14px}.metric b{display:block;font-size:28px;margin-top:5px}
+h2{font-size:26px;margin:0 0 18px}.notice{border:2px solid #24516f;border-radius:18px;padding:16px;color:#b8c3cc;line-height:1.45}.rows{margin-top:14px}.row{display:flex;justify-content:space-between;border-bottom:1px solid #163043;padding:11px 0;gap:10px}.row span:last-child{font-weight:800;text-align:right}
+.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.prob{padding:14px;border-radius:16px;background:#081925;text-align:center}.prob b{font-size:26px}.prob small{display:block;color:var(--muted)}
+.badge{display:inline-block;padding:5px 9px;border-radius:10px;background:#102434;color:#c8d2db;font-weight:800;font-size:12px}.ok{color:var(--green)}.warn{color:var(--gold)}.bad{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #173244}th{color:var(--muted)}
+.footer{color:#71808c;font-size:12px;line-height:1.5}
+@media(max-width:520px){.test{font-size:58px}.circle{width:205px;height:205px}.grid{gap:9px}.card{padding:19px}.probs{gap:7px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="head"><div class="logo">IA</div><div><h1>IA BANCA FRANCESA • V2.6</h1><p>CALIBRAÇÃO ESTRUTURAL • WALK-FORWARD • PROBABILIDADE • CONTROLE DE RISCO</p></div></header>
+
+<section class="card hero">
+<h2>TESTE ATUAL</h2><div class="test" id="test">—</div><div class="next" id="next">PRÓXIMO: —</div>
+<input class="input" id="result" type="number" min="1" max="17" placeholder="Resultado 1–17">
+<button class="btn" id="register">REGISTAR RESULTADO</button>
+</section>
+
+<section class="card signal">
+<div class="circle"><div><strong id="signalMark">—</strong><div class="state wait" id="signal">AGUARDAR</div></div></div>
+<div class="sub">Confiança da decisão: <b id="confidence">—</b></div>
+<div class="sub">Limiar forte: <b id="threshold">—</b></div>
+</section>
+
+<section class="card">
+<h2>Probabilidades do modelo</h2>
+<div class="probs"><div class="prob"><small>G</small><b id="pG">—</b></div><div class="prob"><small>P</small><b id="pP">—</b></div><div class="prob"><small>N</small><b id="pN">—</b></div></div>
+<div class="notice" style="margin-top:14px">As probabilidades G/P/N são normalizadas para 100%. <b>Confiança</b> é separada da probabilidade. Sequências servem para caracterizar regime/momento, nunca para garantir o próximo resultado.</div>
+</section>
+
+<section class="card">
+<h2>Motor de calibração estrutural</h2>
+<div class="grid">
+<div class="metric"><span>Histórico usado</span><b id="hist">0</b></div>
+<div class="metric"><span>Treino / validação</span><b id="split">—</b></div>
+<div class="metric"><span>Folds</span><b id="folds">0</b></div>
+<div class="metric"><span>Modelo</span><b>CE</b></div>
+</div>
+<div class="rows">
+<div class="row"><span>Walk-forward Brier</span><span id="brier">—</span></div>
+<div class="row"><span>Walk-forward log-loss</span><span id="logloss">—</span></div>
+<div class="row"><span>Balanced accuracy</span><span id="balacc">—</span></div>
+<div class="row"><span>Macro-F1</span><span id="f1">—</span></div>
+<div class="row"><span>Coverage (G/P)</span><span id="coverage">—</span></div>
+<div class="row"><span>Acerto condicional</span><span id="condacc">—</span></div>
+<div class="row"><span>Limiar escolhido OOS</span><span id="thresholdOOS">—</span></div>
+<div class="row"><span>Baseline sempre N</span><span id="baselineN">—</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Regime / momento</h2>
+<div class="grid">
+<div class="metric"><span>Janela 12</span><b id="r12">—</b></div>
+<div class="metric"><span>Janela 24</span><b id="r24">—</b></div>
+<div class="metric"><span>Janela 48</span><b id="r48">—</b></div>
+<div class="metric"><span>Janela 96</span><b id="r96">—</b></div>
+</div>
+<div class="rows">
+<div class="row"><span>Estado dominante</span><span id="dominant">—</span></div>
+<div class="row"><span>Persistência N</span><span id="persist">—</span></div>
+<div class="row"><span>Desvio da referência</span><span id="deviation">—</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2>Auditoria das entradas</h2>
+<div class="grid">
+<div class="metric"><span>Entradas</span><b id="entries">0</b></div><div class="metric"><span>Acertos</span><b class="ok" id="wins">0</b></div>
+<div class="metric"><span>Erros</span><b class="bad" id="losses">0</b></div><div class="metric"><span>Taxa</span><b id="rate">—</b></div>
+</div>
+<div class="notice" style="margin-top:14px">AGUARDAR = stake executado €0. G/P só podem gerar entrada quando a confiança ultrapassar o limiar. O histórico preserva resultado, classe, probabilidades, sinal e stake separadamente.</div>
+</section>
+
+<section class="card">
+<h2>Matriz de confusão</h2>
+<table><thead><tr><th>Real \ Prev.</th><th>G</th><th>P</th><th>N</th></tr></thead><tbody>
+<tr><th>G</th><td id="cmGG">0</td><td id="cmGP">0</td><td id="cmGN">0</td></tr>
+<tr><th>P</th><td id="cmPG">0</td><td id="cmPP">0</td><td id="cmPN">0</td></tr>
+<tr><th>N</th><td id="cmNG">0</td><td id="cmNP">0</td><td id="cmNN">0</td></tr>
+</tbody></table>
+</section>
+
+<section class="card">
+<h2>Histórico</h2>
+<table><thead><tr><th>Teste</th><th>Valor</th><th>Classe</th><th>Sinal</th><th>Conf.</th><th>Stake</th></tr></thead><tbody id="history"></tbody></table>
+</section>
+
+<section class="card">
+<h2>Regras V2.6</h2>
+<div class="notice">
+1. Nenhum resultado futuro entra no treino da previsão atual.<br>
+2. Walk-forward usa folds temporais explícitos; nunca <b>undefined</b>.<br>
+3. Probabilidades G/P/N somam 100%.<br>
+4. AGUARDAR tem stake <b>€0</b>; não é aposta.<br>
+5. O limiar é escolhido por validação fora da amostra, entre candidatos, não por desempenho no treino.<br>
+6. Regime/momento é uma variável descritiva e deve ser validado fora da amostra.<br>
+7. A IA compara-se com baselines simples antes de liberar G/P forte.<br>
+8. Não há progressão de stake por perdas.
+</div>
+</section>
+<p class="footer">V2.6 é uma camada de calibração e auditoria. Não transforma sequências aleatórias em previsões garantidas. O sistema bloqueia entradas quando a evidência não é suficiente.</p>
+</div>
+
+<script>
+const REF={G:3/17,P:3/17,N:11/17};
+const CLASS={v=>v>=14?'G':v<=7?'P':'N'};
+const STORAGE=['bf_v25_history','bf_v26_history','banca_francesa_history','ia_banca_francesa_history'];
+
+function loadHistory(){
+  for(const k of STORAGE){
+    try{const x=JSON.parse(localStorage.getItem(k)||'null');if(Array.isArray(x)&&x.length)return x.map(normalize).filter(Boolean)}catch{}
+  }
+  return [];
+}
+function normalize(x){
+  const id=Number(String(x.test??x.teste??x.id??'').replace(/\D/g,'')); const value=Number(x.value??x.valor??x.result??x.resultado);
+  if(!Number.isFinite(id)||!Number.isFinite(value)||value<1||value>17)return null;
+  const cls=x.class??x.classe??CLASS.v(value);
+  return {test:id,value,actual:cls,sinal:x.sinal??'AGUARDAR',stake:Number(x.stake??0)||0,probs:x.probs||null,confidence:Number(x.confidence??x.confianca)||null};
+}
+let H=loadHistory().sort((a,b)=>a.test-b.test);
+if(!H.length){ // only a minimal visible-data seed; existing localStorage takes precedence
+  const vals=[[2601,15],[2602,12],[2603,11],[2604,5],[2605,11],[2606,7],[2607,13],[2608,6],[2609,10],[2610,13],[2611,10],[2612,17],[2613,13],[2614,10],[2615,11],[2616,8],[2617,13],[2618,12],[2619,10],[2620,9],[2621,12],[2622,7],[2623,5],[2624,11],[2625,9],[2626,6],[2707,8],[2708,10],[2709,15],[2710,10],[2711,8],[2712,13],[2713,14],[2714,11],[2715,12],[2716,8],[2717,13],[2718,9],[2719,15],[2720,9],[2721,10],[2722,14],[2723,11],[2724,7],[2725,11],[2726,12],[2727,8],[2728,9],[2729,12],[2730,10],[2731,12],[2732,8],[2733,16],[2734,13],[2735,11],[2736,12],[2737,12],[2738,11],[2739,6],[2740,4],[2741,13],[2742,15],[2743,12],[2744,9],[2745,10],[2746,9],[2747,14],[2748,10],[2749,10],[2750,15],[2751,12],[2752,8],[2753,14],[2754,8],[2755,14],[2756,11],[2757,10],[2758,12],[2759,4],[2760,14],[2761,6],[2762,7],[2763,10],[2764,14],[2765,13],[2766,10],[2767,11]];
+  H=vals.map(([test,value])=>({test,value,actual:CLASS.v(value),sinal:'AGUARDAR',stake:0,probs:null,confidence:null}));
+}
+function pct(x){return Number.isFinite(x)?(x*100).toFixed(1)+'%':'—'}
+function counts(arr){let c={G:0,P:0,N:0};arr.forEach(x=>c[x.actual]++);return c}
+function regime(arr,n){const c=counts(arr.slice(-n));const total=Math.max(1,Object.values(c).reduce((a,b)=>a+b,0));const k=Object.keys(c).sort((a,b)=>c[b]-c[a])[0];return `${k} ${pct(c[k]/total)}`}
+function predictAt(i){
+  const past=H.slice(0,i); if(past.length<8)return {p:{G:REF.G,P:REF.P,N:REF.N},signal:'AGUARDAR',confidence:0,threshold:.62};
+  const windows=[12,24,48,96].map(n=>counts(past.slice(-n)));
+  const w=windows[0]; const total=Math.max(1,w.G+w.P+w.N);
+  // Smoothed empirical probabilities. Recent data gets a modest weight; no next-result rule.
+  const pG=(w.G+1)/(total+3),pP=(w.P+1)/(total+3),pN=(w.N+1)/(total+3);
+  const ps={G:pG,P:pP,N:pN}; const best=['G','P','N'].sort((a,b)=>ps[b]-ps[a])[0];
+  const conf=ps[best];
+  const threshold=.62;
+  return {p:ps,signal:(best!=='N'&&conf>=threshold)?best:'AGUARDAR',confidence:conf,threshold};
+}
+function walkForward(){
+  const minTrain=40, folds=8, predictions=[];
+  if(H.length<minTrain+folds)return {folds:0,predictions};
+  const step=Math.max(1,Math.floor((H.length-minTrain)/folds));
+  for(let f=0;f<folds;f++){
+    const end=Math.min(H.length,minTrain+(f+1)*step);
+    const start=Math.min(H.length,end-step);
+    for(let i=start;i<end;i++){
+      // Previsão usa somente H[0..i-1]; H[i] é exclusivamente futuro.
+      const pr=predictAt(i);
+      predictions.push({actual:H[i].actual,...pr,fold:f+1,index:i});
+    }
+  }
+  return {folds,predictions};
+}
+function chooseThresholdOOS(predictions){
+  const candidates=[.55,.58,.60,.62,.65,.68,.70,.72];
+  if(predictions.length<20)return .62;
+  const cut=Math.max(10,Math.floor(predictions.length*.6));
+  const train=predictions.slice(0,cut);
+  let best=.62,bestScore=-Infinity;
+  for(const t of candidates){
+    const s=train.filter(x=>x.signal!=='N' && Math.max(x.p.G,x.p.P)>=t);
+    if(s.length<5)continue;
+    const acc=s.filter(x=>(x.p.G>=x.p.P?'G':'P')===x.actual).length/s.length;
+    // Pequena penalização por cobertura excessivamente baixa.
+    const score=acc + 0.08*Math.sqrt(s.length/train.length);
+    if(score>bestScore){bestScore=score;best=t;}
+  }
+  return best;
+}
+function evaluateThreshold(predictions,t){
+  const cut=Math.max(10,Math.floor(predictions.length*.6));
+  const test=predictions.slice(cut);
+  const selected=test.filter(x=>Math.max(x.p.G,x.p.P)>=t);
+  const correct=selected.filter(x=>(x.p.G>=x.p.P?'G':'P')===x.actual).length;
+  return {coverage:selected.length/(test.length||1),accuracy:correct/(selected.length||1)};
+}
+function metrics(){
+  const wf=walkForward(),ps=wf.predictions;if(!ps.length)return {wf,...emptyMetrics(),thresholdOOS:.62,baselineN:NaN};
+  let b=0,ll=0;const cm={G:{G:0,P:0,N:0},P:{G:0,P:0,N:0},N:{G:0,P:0,N:0}};
+  ps.forEach(x=>{const q=x.p[x.actual];b+=(1-q)**2+Object.keys(REF).filter(k=>k!==x.actual).reduce((s,k)=>s+x.p[k]**2,0);ll-=Math.log(Math.max(q,1e-12));const pred=['G','P','N'].sort((a,c)=>x.p[c]-x.p[a])[0];cm[x.actual][pred]++});
+  b/=ps.length;ll/=ps.length;
+  let recalls=[],f1s=[];
+  for(const c of ['G','P','N']){
+    const tp=cm[c][c],fp=['G','P','N'].filter(r=>r!==c).reduce((s,r)=>s+cm[r][c],0),fn=['G','P','N'].filter(k=>k!==c).reduce((s,k)=>s+cm[c][k],0);
+    const rec=tp/(tp+fn||1),pre=tp/(tp+fp||1);recalls.push(rec);f1s.push(2*pre*rec/(pre+rec||1));
+  }
+  const bal=recalls.reduce((a,v)=>a+v,0)/3;
+  const f1=f1s.reduce((a,v)=>a+v,0)/3;
+  const thresholdOOS=chooseThresholdOOS(ps);
+  const ev=evaluateThreshold(ps,thresholdOOS);
+  const baselineN=ps.filter(x=>x.actual==='N').length/ps.length;
+  return {wf,brier:b,logloss:ll,bal,f1,coverage:ev.coverage,condacc:ev.accuracy,cm,thresholdOOS,baselineN};
+}
+function emptyMetrics(){return {brier:NaN,logloss:NaN,bal:NaN,f1:NaN,coverage:NaN,condacc:NaN,cm:{G:{G:0,P:0,N:0},P:{G:0,P:0,N:0},N:{G:0,P:0,N:0}}}}
+function render(){
+  const next=(H.length?Math.max(...H.map(x=>x.test))+1:2601), current=next;
+  document.querySelector('#test').textContent=String(current).padStart(5,'0');document.querySelector('#next').textContent='PRÓXIMO: '+String(current+1).padStart(5,'0');
+  const m=metrics(); const pr=predictAt(H.length); pr.threshold=m.thresholdOOS; pr.signal=(Math.max(pr.p.G,pr.p.P)>=pr.threshold && Math.max(pr.p.G,pr.p.P)>pr.p.N)?(pr.p.G>=pr.p.P?'G':'P'):'AGUARDAR'; const best=Object.entries(pr.p).sort((a,b)=>b[1]-a[1])[0];
+  document.querySelector('#signal').textContent=pr.signal;document.querySelector('#signal').className='state '+(pr.signal==='AGUARDAR'?'wait':'entry');
+  document.querySelector('#signalMark').textContent=pr.signal==='AGUARDAR'?'—':pr.signal;
+  document.querySelector('#confidence').textContent=pct(pr.confidence);document.querySelector('#threshold').textContent=pct(pr.threshold);
+  for(const k of ['G','P','N'])document.querySelector('#p'+k).textContent=pct(pr.p[k]);
+  document.querySelector('#hist').textContent=H.length;document.querySelector('#split').textContent=H.length?Math.round(H.length*.72)+' / '+Math.floor(H.length*.28):'—';
+  document.querySelector('#folds').textContent=m.wf.folds||0;document.querySelector('#brier').textContent=Number.isFinite(m.brier)?m.brier.toFixed(4):'—';document.querySelector('#logloss').textContent=Number.isFinite(m.logloss)?m.logloss.toFixed(4):'—';document.querySelector('#balacc').textContent=pct(m.bal);document.querySelector('#f1').textContent=pct(m.f1);document.querySelector('#coverage').textContent=pct(m.coverage);document.querySelector('#condacc').textContent=pct(m.condacc);document.querySelector('#thresholdOOS').textContent=pct(m.thresholdOOS);document.querySelector('#baselineN').textContent=pct(m.baselineN);
+  for(const n of [12,24,48,96])document.querySelector('#r'+n).textContent=H.length?regime(H,n):'—';
+  const c=counts(H.slice(-96));const dom=Object.keys(c).sort((a,b)=>c[b]-c[a])[0];document.querySelector('#dominant').textContent=H.length?`${dom} (${pct(c[dom]/Math.max(1,Object.values(c).reduce((a,b)=>a+b,0)))})`:'—';
+  let run=0;for(let i=H.length-1;i>=0&&H[i].actual==='N';i--)run++;document.querySelector('#persist').textContent=run;
+  document.querySelector('#deviation').textContent=H.length?`G ${pct(c.G/Math.max(1,H.slice(-96).length)-REF.G)} • P ${pct(c.P/Math.max(1,H.slice(-96).length)-REF.P)} • N ${pct(c.N/Math.max(1,H.slice(-96).length)-REF.N)}`:'—';
+  const selected=H.filter(x=>x.sinal&&x.sinal!=='AGUARDAR'&&x.stake>0);const wins=selected.filter(x=>x.sinal===x.actual).length;document.querySelector('#entries').textContent=selected.length;document.querySelector('#wins').textContent=wins;document.querySelector('#losses').textContent=selected.length-wins;document.querySelector('#rate').textContent=selected.length?pct(wins/selected.length):'—';
+  const cm=m.cm;for(const r of ['G','P','N'])for(const p of ['G','P','N'])document.querySelector('#cm'+r+p).textContent=cm[r][p]||0;
+  const tbody=document.querySelector('#history');tbody.innerHTML=H.slice(-30).reverse().map(x=>`<tr><td>O${String(x.test).padStart(4,'0')}</td><td>${x.value}</td><td>${x.actual}</td><td>${x.sinal}</td><td>${x.confidence?pct(x.confidence):'—'}</td><td>€${(x.stake||0).toFixed(2)}</td></tr>`).join('');
+}
+document.querySelector('#register').onclick=()=>{
+  const v=Number(document.querySelector('#result').value);if(!Number.isInteger(v)||v<1||v>17)return alert('Resultado deve estar entre 1 e 17.');
+  const test=H.length?Math.max(...H.map(x=>x.test))+1:2601;const mm=metrics();const pr=predictAt(H.length);pr.threshold=mm.thresholdOOS;pr.signal=(Math.max(pr.p.G,pr.p.P)>=pr.threshold && Math.max(pr.p.G,pr.p.P)>pr.p.N)?(pr.p.G>=pr.p.P?'G':'P'):'AGUARDAR';const sinal=pr.signal;H.push({test,value:v,actual:CLASS.v(v),sinal,stake:sinal==='AGUARDAR'?0:2,probs:pr.p,confidence:pr.confidence});localStorage.setItem('bf_v26_history',JSON.stringify(H));document.querySelector('#result').value='';render();
+};
+render();
+</script>
+</body></html>

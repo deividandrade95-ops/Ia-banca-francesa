@@ -3,67 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>IA Banca Francesa • V6.6.2 FIRME RIGOROSA 445</title>
-
-  <meta
-    http-equiv="refresh"
-    content="0; url=./IA_Banca_Francesa_V6_6_2_FIRME_TESTE_445_RIGOROSA.html"
-  >
 
   <style>
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background: #020b12;
       color: white;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    #status {
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-    }
-
-    .box {
       padding: 30px;
+      box-sizing: border-box;
     }
 
-    h1 {
+    #statusBox {
+      max-width: 600px;
+    }
+
+    #status h1 {
       color: #ffc229;
-      font-size: 24px;
+      font-size: 25px;
     }
 
-    p {
+    #status p {
       color: #aebdca;
+      line-height: 1.5;
     }
 
-    a {
-      color: #4e9cff;
+    #error {
+      display: none;
+      color: #ff6978;
+      margin-top: 20px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1>IA BANCA FRANCESA</h1>
-    <p>V6.6.2 FIRME RIGOROSA 445</p>
-    <p>A abrir a versão principal...</p>
-
-    <p>
-      Se não abrir automaticamente,
-      <a href="./IA_Banca_Francesa_V6_6_2_FIRME_TESTE_445_RIGOROSA.html">
-        toque aqui
-      </a>.
-    </p>
+  <div id="status">
+    <div id="statusBox">
+      <h1>IA BANCA FRANCESA</h1>
+      <p>V6.6.2 FIRME RIGOROSA 445</p>
+      <p>Carregando a versão principal...</p>
+      <p id="error"></p>
+    </div>
   </div>
 
   <script>
-    window.location.replace(
-      "./IA_Banca_Francesa_V6_6_2_FIRME_TESTE_445_RIGOROSA.html"
-    );
+    (async function () {
+
+      const FILE =
+        "./IA_Banca_Francesa_V6_6_2_FIRME_TESTE_445_RIGOROSA.html";
+
+      try {
+
+        const response = await fetch(
+          FILE,
+          {
+            cache: "no-store"
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "Não foi possível carregar a versão RIGOROSA 445."
+          );
+        }
+
+        let html = await response.text();
+
+        /*
+         * CORREÇÃO DO MOTOR:
+         *
+         * A versão original possuía:
+         *
+         * register.onclick=register;
+         *
+         * O nome "register" também é utilizado pela função
+         * register(), podendo causar conflito com o elemento
+         * <button id="register"> no Safari.
+         *
+         * Substituímos por uma ligação explícita ao elemento.
+         */
+
+        html = html.replace(
+          "register.onclick=register;chooseP.onclick=()=>choose('P');chooseG.onclick=()=>choose('G');",
+          "document.getElementById('register').addEventListener('click', register);document.getElementById('chooseP').addEventListener('click', ()=>choose('P'));document.getElementById('chooseG').addEventListener('click', ()=>choose('G'));"
+        );
+
+        /*
+         * Segunda proteção:
+         * caso a versão venha formatada de maneira diferente,
+         * corrige individualmente os três eventos.
+         */
+
+        html = html.replace(
+          /register\.onclick\s*=\s*register\s*;/g,
+          "document.getElementById('register').addEventListener('click', register);"
+        );
+
+        html = html.replace(
+          /chooseP\.onclick\s*=\s*\(\)\s*=>\s*choose\(['"]P['"]\)\s*;/g,
+          "document.getElementById('chooseP').addEventListener('click',()=>choose('P'));"
+        );
+
+        html = html.replace(
+          /chooseG\.onclick\s*=\s*\(\)\s*=>\s*choose\(['"]G['"]\)\s*;/g,
+          "document.getElementById('chooseG').addEventListener('click',()=>choose('G'));"
+        );
+
+        /*
+         * Mostra a aplicação corrigida.
+         *
+         * O conteúdo original da RIGOROSA 445 permanece intacto:
+         * - 445 registros
+         * - O3081 = 12
+         * - próximo teste O3082
+         * - gaps preservados
+         * - motor 24/48/96
+         * - regras P/G/N
+         */
+
+        document.open();
+        document.write(html);
+        document.close();
+
+      } catch (err) {
+
+        document.getElementById("error").style.display = "block";
+
+        document.getElementById("error").textContent =
+          "Erro ao carregar a V6.6.2 FIRME RIGOROSA 445: " +
+          err.message;
+      }
+
+    })();
   </script>
 
 </body>

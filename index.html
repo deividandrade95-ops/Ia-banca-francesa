@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>IA Banca Francesa • V6.6.2 FIRME RIGOROSA 445</title>
 
   <style>
@@ -53,8 +54,13 @@
   <div id="status">
     <div id="statusBox">
       <h1>IA BANCA FRANCESA</h1>
+
       <p>V6.6.2 FIRME RIGOROSA 445</p>
-      <p>Carregando a versão principal...</p>
+
+      <p>
+        Carregando a versão principal...
+      </p>
+
       <p id="error"></p>
     </div>
   </div>
@@ -82,35 +88,55 @@
 
         let html = await response.text();
 
+
         /*
-         * CORREÇÃO DO MOTOR:
+         * ==========================================================
+         * CORREÇÃO 1 — BOTÃO REGISTRAR RESULTADO
+         * ==========================================================
          *
-         * A versão original possuía:
+         * Evita depender de:
          *
          * register.onclick=register;
          *
-         * O nome "register" também é utilizado pela função
-         * register(), podendo causar conflito com o elemento
-         * <button id="register"> no Safari.
-         *
-         * Substituímos por uma ligação explícita ao elemento.
+         * e liga explicitamente o botão ao elemento.
          */
 
         html = html.replace(
-          "register.onclick=register;chooseP.onclick=()=>choose('P');chooseG.onclick=()=>choose('G');",
-          "document.getElementById('register').addEventListener('click', register);document.getElementById('chooseP').addEventListener('click', ()=>choose('P'));document.getElementById('chooseG').addEventListener('click', ()=>choose('G'));"
+          "register.onclick=register;",
+          "document.getElementById('register').addEventListener('click',register);"
         );
 
+
         /*
-         * Segunda proteção:
-         * caso a versão venha formatada de maneira diferente,
-         * corrige individualmente os três eventos.
+         * Proteção adicional caso o código venha com espaços.
          */
 
         html = html.replace(
           /register\.onclick\s*=\s*register\s*;/g,
-          "document.getElementById('register').addEventListener('click', register);"
+          "document.getElementById('register').addEventListener('click',register);"
         );
+
+
+        /*
+         * ==========================================================
+         * CORREÇÃO 2 — ESCOLHA P/G
+         * ==========================================================
+         */
+
+        html = html.replace(
+          "chooseP.onclick=()=>choose('P');",
+          "document.getElementById('chooseP').addEventListener('click',()=>choose('P'));"
+        );
+
+        html = html.replace(
+          "chooseG.onclick=()=>choose('G');",
+          "document.getElementById('chooseG').addEventListener('click',()=>choose('G'));"
+        );
+
+
+        /*
+         * Proteções adicionais para as escolhas.
+         */
 
         html = html.replace(
           /chooseP\.onclick\s*=\s*\(\)\s*=>\s*choose\(['"]P['"]\)\s*;/g,
@@ -122,21 +148,86 @@
           "document.getElementById('chooseG').addEventListener('click',()=>choose('G'));"
         );
 
+
         /*
-         * Mostra a aplicação corrigida.
+         * ==========================================================
+         * CORREÇÃO 3 — AUDITORIA
+         * ==========================================================
          *
-         * O conteúdo original da RIGOROSA 445 permanece intacto:
-         * - 445 registros
-         * - O3081 = 12
-         * - próximo teste O3082
-         * - gaps preservados
-         * - motor 24/48/96
-         * - regras P/G/N
+         * Antes:
+         *
+         * let ch=Object.values(state.choices);
+         * rounds.textContent=ch.length;
+         *
+         * Isso contava também uma escolha P/G ainda PENDENTE.
+         *
+         * Agora:
+         *
+         * somente escolhas que já possuem resultClass são
+         * consideradas rodadas concluídas.
+         */
+
+        html = html.replace(
+          "let ch=Object.values(state.choices);rounds.textContent=ch.length;hits.textContent=ch.filter(x=>x.resultClass&&x.resultClass===x.choice).length;errors.textContent=ch.filter(x=>x.resultClass&&x.resultClass!=='N'&&x.resultClass!==x.choice).length;neutrals.textContent=ch.filter(x=>x.resultClass==='N').length;",
+          "let ch=Object.values(state.choices),resolved=ch.filter(x=>x.resultClass);rounds.textContent=resolved.length;hits.textContent=resolved.filter(x=>x.resultClass===x.choice).length;errors.textContent=resolved.filter(x=>x.resultClass!=='N'&&x.resultClass!==x.choice).length;neutrals.textContent=resolved.filter(x=>x.resultClass==='N').length;"
+        );
+
+
+        /*
+         * ==========================================================
+         * CORREÇÃO 4 — CÍRCULO DA SINAL DA IA
+         * ==========================================================
+         *
+         * Se existir confirmação IA:
+         *   círculo = G/P confirmado pela IA
+         *
+         * Se não existir confirmação IA:
+         *   círculo = escolha operacional G/P
+         *
+         * Assim o usuário não vê mais:
+         *
+         * ESCOLHA OPERACIONAL = G
+         * SINAL DA IA = —
+         *
+         * sem explicação.
+         */
+
+        html = html.replace(
+          "letter.textContent=sig||'—';siglabel.textContent=sig?'ENTRADA IA':'SEM CONFIRMAÇÃO';signalTitle.textContent=sig?'ENTRADA IA • '+sig:'SEM ENTRADA IA CONFIRMADA';signalMeta.textContent=sig?'Sinal separado da escolha operacional; deve ser auditado em walk-forward.':'Escolha P/G continua disponível em todas as rodadas; confirmação IA permanece mais restritiva.';",
+          "if(sig){letter.textContent=sig;siglabel.textContent='ENTRADA IA CONFIRMADA';signalTitle.textContent='ENTRADA IA • '+sig;signalMeta.textContent='Entrada IA confirmada. Escolha operacional atual: '+o+'.';}else{letter.textContent=o;siglabel.textContent='ESCOLHA OPERACIONAL';signalTitle.textContent='SEM ENTRADA IA CONFIRMADA';signalMeta.textContent='Escolha operacional atual: '+o+'. Esta escolha P/G é obrigatória e não equivale a uma entrada IA confirmada.';}"
+        );
+
+
+        /*
+         * ==========================================================
+         * PROTEÇÃO EXTRA DO CÍRCULO
+         * ==========================================================
+         *
+         * Caso a versão interna esteja formatada de outra maneira,
+         * tenta substituir o bloco individualmente.
+         */
+
+        html = html.replace(
+          /letter\.textContent=sig\|\|'—';siglabel\.textContent=sig\?'ENTRADA IA':'SEM CONFIRMAÇÃO';signalTitle\.textContent=sig\?'ENTRADA IA • '\+sig:'SEM ENTRADA IA CONFIRMADA';signalMeta\.textContent=sig\?'Sinal separado da escolha operacional; deve ser auditado em walk-forward\.':'Escolha P\/G continua disponível em todas as rodadas; confirmação IA permanece mais restritiva\.';/g,
+          "if(sig){letter.textContent=sig;siglabel.textContent='ENTRADA IA CONFIRMADA';signalTitle.textContent='ENTRADA IA • '+sig;signalMeta.textContent='Entrada IA confirmada. Escolha operacional atual: '+o+'.';}else{letter.textContent=o;siglabel.textContent='ESCOLHA OPERACIONAL';signalTitle.textContent='SEM ENTRADA IA CONFIRMADA';signalMeta.textContent='Escolha operacional atual: '+o+'. Esta escolha P/G é obrigatória e não equivale a uma entrada IA confirmada.';}"
+        );
+
+
+        /*
+         * ==========================================================
+         * CARREGA A APLICAÇÃO ORIGINAL
+         * ==========================================================
+         *
+         * Os 445 registros permanecem no arquivo RIGOROSO.
+         * Este index apenas aplica as correções antes de exibi-lo.
          */
 
         document.open();
+
         document.write(html);
+
         document.close();
+
 
       } catch (err) {
 
@@ -145,6 +236,7 @@
         document.getElementById("error").textContent =
           "Erro ao carregar a V6.6.2 FIRME RIGOROSA 445: " +
           err.message;
+
       }
 
     })();
